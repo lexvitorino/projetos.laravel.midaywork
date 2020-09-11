@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscriber;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -100,7 +101,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        Subscriber::create([
+            'name' => $data['name'],
+            'email' => $data['email']
+        ]);
+
+        $subscriber = Subscriber::where('email', $data['email'])->first();
+        if (!$subscriber) {
+            return null;
+        }
+
         return User::create([
+            'subscriber_id' => $subscriber->id,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
