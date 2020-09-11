@@ -136,6 +136,26 @@ class UsersController extends Controller
             'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin'
         ]);
 
+        $validator = $this->editValidation($user, $data);
+        if ($validator && count($validator->errors()) > 0) {
+            return redirect()->route('users.edit', ['user' => $user->id])
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = empty($data['password']) ? $user->password : Hash::make($data['password']);
+        $user->start_date = $data['start_date'];
+        $user->end_date = $data['end_date'];
+        $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
+        $user->save();
+
+        return $this->back();
+    }
+
+    private function editValidation($user, $data)
+    {
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:100']
@@ -152,8 +172,9 @@ class UsersController extends Controller
             }
 
             if (!empty($data['password'])) {
-                if (strlen($data['password']) == 4) {
+                if (strlen($data['password']) < 4) {
                     $validator->errors()->add('password', 'Password não atende ao tamanho mínimo de 4 caracteres.');
+                    var_dump('Password não atende ao tamanho mínimo de 4 caracteres.');
                 } else if ($data['password'] != $data['password_confirmation']) {
                     $validator->errors()->add('password', 'Campo password não compátivel.');
                 } else if (empty($data['password_confirmation'])) {
@@ -161,22 +182,7 @@ class UsersController extends Controller
                 }
             }
         }
-
-        if ($validator->fails()) {
-            return redirect()->route('users.edit')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = empty($data['password']) ? $user->password : Hash::make($data['password']);
-        $user->start_date = $data['start_date'];
-        $user->end_date = $data['end_date'];
-        $user->is_admin = $data['is_admin'] ?? false;
-        $user->save();
-
-        return $this->back();
+        return $validator;
     }
 
     /**
