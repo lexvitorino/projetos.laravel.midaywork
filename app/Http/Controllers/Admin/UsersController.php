@@ -79,7 +79,7 @@ class UsersController extends Controller
         $user->password = Hash::make($data['password']);
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
-        $user->is_admin = $data['is_admin'] ?? false;
+        $user->is_admin = ($data['is_admin'] == 'on') ? true : false;
         $user->save();
 
         return $this->back();
