@@ -156,12 +156,14 @@ class UsersController extends Controller
                     $validator->errors()->add('password', 'Password não atende ao tamanho mínimo de 4 caracteres.');
                 } else if ($data['password'] != $data['password_confirmation']) {
                     $validator->errors()->add('password', 'Campo password não compátivel.');
+                } else if (empty($data['password_confirmation'])) {
+                    $validator->errors()->add('password', 'É necessário repetir a senha.');
                 }
             }
         }
 
         if ($validator->fails()) {
-            return redirect()->route('users.create')
+            return redirect()->route('users.edit')
                 ->withErrors($validator)
                 ->withInput();
         }
