@@ -79,7 +79,7 @@ class UsersController extends Controller
         $user->password = Hash::make($data['password']);
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
-        $user->is_admin = ($data['is_admin'] == 'on') ? true : false;
+        $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
         $user->save();
 
         return $this->back();
@@ -138,12 +138,14 @@ class UsersController extends Controller
 
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:100', 'unique:users']
+            'email' => ['required', 'string', 'email', 'max:100']
         ], $this->message());
 
         if (!$validator->fails()) {
             if ($data['email'] != $user->email) {
-                $hasEmail = User::where("subscriber_id", Auth::user()->subscriber_id)->where('email', $data['email'])->first();
+                $hasEmail = User::where("subscriber_id", Auth::user()->subscriber_id)
+                    ->where('id', intval($data['id']))
+                    ->where('email', $data['email'])->first();
                 if (count($hasEmail) === 0) {
                     $validator->errors()->add('email', 'Email informado já existe.');
                 }
