@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label for="password-confirm">Confirme Password</label>
                 <input type="password" id="password-confirm" name="password_confirmation"
-                    class="form-contro l@error('password') is-invalid @enderror"
+                    class="form-control @error('password') is-invalid @enderror"
                     placeholder="Confirme Password"/>
             </div>
         </div>
