@@ -20,6 +20,10 @@
                 <span class="record">Entrada 2: {{ $workingHours->time3 ?? '--:--:--' }}</span>
                 <span class="record">Saída 2: {{ $workingHours->time4 ?? '--:--:--' }}</span>
             </div>
+            <div class="d-flex m-5 justify-content-around">
+                <span class="record">Entrada 3: {{ $workingHours->time5 ?? '--:--:--' }}</span>
+                <span class="record">Saída 3: {{ $workingHours->time6 ?? '--:--:--' }}</span>
+            </div>
         </div>
         <div class="card-footer d-flex justify-content-center">
             <form class="d-inline" method="POST" action="{{ route('dayRecord') }}" onsubmit="return confirm('Confirma apontamento?')">

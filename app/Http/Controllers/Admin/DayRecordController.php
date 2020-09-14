@@ -37,7 +37,7 @@ class DayRecordController extends Controller
         $workingHours = WorkingHour::loadFromUserAndDate($user->sibscriber_id, $user->id, date('Y-m-d'));
 
         return view("admin.dayRecord", [
-            'title' => (object) ['icon' => 'icofont-check-alt', 'title' => 'Reistrar Ponto', 'subtitle' => 'Mantenha seu ponto consistente',],
+            'title' => (object) ['icon' => 'icofont-check-alt', 'title' => 'Registrar Ponto', 'subtitle' => 'Mantenha seu ponto consistente',],
             'user' => Auth::user(),
             'workingHours' => $workingHours,
             'today' => $today
@@ -94,6 +94,12 @@ class DayRecordController extends Controller
                 break;
             case 'time4':
                 $workingHours->time4 = $currentTime;
+                break;
+            case 'time5':
+                $workingHours->time5 = $currentTime;
+                break;
+            case 'time6':
+                $workingHours->time6 = $currentTime;
                 break;
             default:
                 MessageUtils::warning('Você já fez os quatro apontamentos do dia!');

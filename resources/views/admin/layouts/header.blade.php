@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url(mix('css/bootstrap.css')) }}">
     <link rel="stylesheet" href="{{ url(mix('css/icofont.css')) }}">
     <link rel="stylesheet" href="{{ url(mix('admin/css/style.css')) }}">
-    <title>MI Day Work</title>
+    <title>{{ $title->title }} | MI Day Work</title>
 </head>
 <body>
     <header class="header">

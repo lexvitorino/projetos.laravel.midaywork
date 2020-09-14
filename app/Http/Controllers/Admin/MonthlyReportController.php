@@ -70,8 +70,21 @@ class MonthlyReportController extends Controller
             }
         }
 
+        $totalBalanceTime = (WorkingHour::where('user_id', $user->id)
+            ->where('work_date', '<', ($selectedPeriod . '-' . sprintf('%02d', 1)))
+            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($user->time_balance);
+
+        $totalBalance = DateUtils::getTimeStringFromSeconds($totalBalanceTime);
+        if ($totalBalanceTime > 0) {
+            $signBalance = '+';
+        } else if ($totalBalanceTime < 0) {
+            $signBalance = '-';
+        } else {
+            $signBalance = '';
+        }
+
         $expectedTime = $workDay * Constants::DAILY_TIME;
-        $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime));
+        $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime) + $totalBalanceTime);
         $sign = ($sumOfWorkedTime >= $expectedTime) ? '+' : '-';
 
         return view('admin.monthlyReport', [
@@ -81,6 +94,7 @@ class MonthlyReportController extends Controller
             'report' => $report,
             'sumOfWorkedTime' => DateUtils::getTimeStringFromSeconds($sumOfWorkedTime),
             'balance' => "{$sign}{$balance}",
+            'totalBalance' => (object) ['balance' => "{$signBalance}{$totalBalance}", 'class' => ($totalBalance < 0 ? 'danger' : 'success')],
             'selectedPeriod' => $selectedPeriod,
             'periods' => $periods,
             'selectedUserId' => $selectedUserId

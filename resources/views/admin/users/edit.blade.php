@@ -61,6 +61,13 @@
             </div>
         </div>
         <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="time_balance">Saldo</label>
+                <input type="text" id="time_balance" name="time_balance" placeholder="Informe o saldo de horas"
+                    class="form-control" value="{{ $user->time_balance }}">
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group form-check col-md-6">
                 <label for="is_admin" class="form-check-label">Administrador?</label>
                 <input type="checkbox" id="is_admin" name="is_admin"

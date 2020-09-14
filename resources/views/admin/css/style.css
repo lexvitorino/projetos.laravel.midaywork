@@ -254,3 +254,15 @@ footer.footer {
 .summary-box .value {
     font-size: 2rem;
 }
+
+table th.th-w-10 {
+    width: 10%
+}
+
+table th.th-w-15 {
+    width: 15%
+}
+
+table th.th-w-25 {
+    width: 25%
+}

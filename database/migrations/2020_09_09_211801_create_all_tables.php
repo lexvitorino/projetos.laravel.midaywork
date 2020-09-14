@@ -19,7 +19,7 @@ class CreateAllTables extends Migration
             $table->string('email');
         });
 
-        Schema::create('working_hours', function (Blueprint $table) {
+        Schema::create('', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('subscriber_id');
             $table->unsignedBigInteger('user_id');

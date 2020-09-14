@@ -2,8 +2,10 @@
 
 namespace App\Helpers;
 
+use DateInterval;
 use DateTime;
 use DateTimeImmutable;
+use LengthException;
 
 class DateUtils
 {
@@ -33,11 +35,14 @@ class DateUtils
         return $inputDate;
     }
 
-    public static function sumIntervals($interval1, $interval2)
+    public static function sumIntervals($interval1, $interval2, $interval3 = null)
     {
         $date = new DateTime('00:00:00');
         $date->add($interval1);
         $date->add($interval2);
+        if ($interval3) {
+            $date->add($interval3);
+        }
         return (new DateTime('00:00:00'))->diff($date);
     }
 
@@ -71,6 +76,12 @@ class DateUtils
         return new DateTime(date('Y-m-t', $time));
     }
 
+    public static function getLastDayOfLastMonth($date)
+    {
+        $time = self::getDateAsDateTime($date)->getTimestamp();
+        return new DateTime(date('Y-m-t', strtotime('-1 months', $time)));
+    }
+
     public static function getSecondsFromDateInterval($interval)
     {
         $d1 = new DateTimeImmutable();
@@ -93,7 +104,25 @@ class DateUtils
 
     public static function formatDateWithLocale($date, $pattern)
     {
-        $time = self::getDateAsDateTime($date)->getTimestamp();
-        return strftime($pattern, $time);
+        if (!empty($date)) {
+            if (strlen($date) === 10) {
+                $date .= " 00:00:00";
+            }
+            $time = self::getDateAsDateTime($date)->getTimestamp();
+            return strftime($pattern, $time);
+        }
+        return "";
     }
+
+    public static function getSecondsToTimeString($strTime){
+        if($strTime != ""){
+            $array = explode(":", $strTime);
+            $h = intval($array[0]);
+            $m = intval($array[1]);
+            $hToS = $h * 3600;
+            $mToS = $m * 60;
+            return $hToS + $mToS + intval($array[2]);
+        }
+        return 0;
+     }
 }

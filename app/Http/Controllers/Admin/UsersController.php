@@ -31,7 +31,7 @@ class UsersController extends Controller
     {
         $users = User::where("subscriber_id", Auth::user()->subscriber_id)->paginate(5);
         return view('admin.users.index', [
-            'title' => (object) ['icon' => 'icofont-users', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
+            'title' => (object) ['icon' => 'icofont-users', 'title' => 'Usuários', 'subtitle' => 'Cadastre os colaboradores para controle de horas',],
             'users' => $users,
             'userId' => Auth::id()
         ]);
@@ -45,7 +45,7 @@ class UsersController extends Controller
     public function create()
     {
         return view('admin.users.create', [
-            'title' => (object) ['icon' => 'icofont-users', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
+            'title' => (object) ['icon' => 'icofont-users', 'title' => 'Usuários', 'subtitle' => 'Cadastre os colaboradores para controle de horas',],
         ]);
     }
 
@@ -58,7 +58,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $data = $request->only([
-            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin'
+            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance'
         ]);
 
         $validator = Validator::make($data, [
@@ -80,6 +80,7 @@ class UsersController extends Controller
         $user->password = Hash::make($data['password']);
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
+        $user->time_balance = $data['time_balance'];
         $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
         $user->save();
 
@@ -111,7 +112,7 @@ class UsersController extends Controller
 
         if ($user) {
             return view('admin.users.edit', [
-                'title' => (object) ['icon' => 'icofont-users', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
+                'title' => (object) ['icon' => 'icofont-users', 'title' => 'Usuários', 'subtitle' => 'Cadastre os colaboradores para controle de horas',],
                 'user' => $user
             ]);
         }
@@ -134,7 +135,7 @@ class UsersController extends Controller
         }
 
         $data = $request->only([
-            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin'
+            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance'
         ]);
 
         $validator = $this->editValidation($user, $data);
@@ -149,6 +150,7 @@ class UsersController extends Controller
         $user->password = empty($data['password']) ? $user->password : Hash::make($data['password']);
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
+        $user->time_balance = $data['time_balance'];
         $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
         $user->save();
 

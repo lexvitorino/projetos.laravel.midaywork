@@ -10,18 +10,18 @@
     <table class="table table-bordered table-striped table-hover">
         <thead>
             <th>Nome</th>
-            <th>Email</th>
-            <th>Data de Admissão</th>
-            <th>Data de Desligamento</th>
-            <th>Ações</th>
+            <th class="th-w-25">Email</th>
+            <th class="th-w-15">Data de Admissão</th>
+            <th class="th-w-15">Data de Desligamento</th>
+            <th class="th-w-10">Ações</th>
         </thead>
         <tbody>
             @foreach ($users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->start_date }}</td>
-                <td>{{ $user->end_date }}</td>
+                <td>{{ $user->formatDateWithLocale($user->start_date) }}</td>
+                <td>{{ $user->formatDateWithLocale($user->end_date) }}</td>
                 <td>
                     <a href="{{ route('users.edit',  ['user' => $user->id]) }}"
                         class="btn btn-warning rounded-circle mr-2">

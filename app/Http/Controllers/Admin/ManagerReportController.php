@@ -62,7 +62,7 @@ class ManagerReportController extends Controller
         $hoursInMonth = explode(':', DateUtils::getTimeStringFromSeconds($secondsInMonth))[0];
 
         return view('admin.managerReport', [
-            'title' => (object) ['icon' => 'icofont-chart-histogram', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
+            'title' => (object) ['icon' => 'icofont-chart-histogram', 'title' => 'Relatório Gerêncial', 'subtitle' => 'Acompanhe seu saldo de horas',],
             'users' => $users,
             'user' => $user,
             'activeUsersCount' => $activeUsersCount ?? '',

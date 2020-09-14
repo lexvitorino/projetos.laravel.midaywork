@@ -29,15 +29,24 @@
 					<i class="icofont-search"></i>
 				</button>
 			</div>
-		</form>
+        </form>
+
+        @if(intval($totalBalance->balance) !== 0)
+        <div role="alert" class="my-3 alert alert-{{ $totalBalance->class }} text-right">
+            Saldo Anterior :: {{ $totalBalance->balance }}
+        </div>
+        @endif
 
 		<table class="table table-bordered table-striped table-hover">
+
 			<thead>
 				<th>Dia</th>
 				<th>Entrada 1</th>
 				<th>Saída 1</th>
 				<th>Entrada 2</th>
 				<th>Saída 2</th>
+				<th>Entrada 3</th>
+				<th>Saída 3</th>
 				<th>Saldo</th>
 			</thead>
 			<tbody>
@@ -48,12 +57,14 @@
                     <td>{{ $registry->time2 }}</td>
                     <td>{{ $registry->time3 }}</td>
                     <td>{{ $registry->time4 }}</td>
+                    <td>{{ $registry->time5 }}</td>
+                    <td>{{ $registry->time6 }}</td>
                     <td>{{ $registry->getBalance() }}</td>
                 </tr>
                 @endforeach
 				<tr class="bg-primary text-white">
 					<td>Horas Trabalhadas</td>
-					<td colspan="3">{{ $sumOfWorkedTime }}</td>
+					<td colspan="5">{{ $sumOfWorkedTime }}</td>
 					<td>Saldo Mensal</td>
 					<td>{{ $balance }}</td>
 				</tr>

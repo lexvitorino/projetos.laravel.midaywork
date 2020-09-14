@@ -23,7 +23,7 @@ class WorkingHour extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'work_date', 'worked_time', 'time1', 'time2', 'time3', 'time4'
+        'user_id', 'work_date', 'worked_time', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6'
     ];
 
     public static function loadFromUserAndDate($subscriberId, $userId, $workDate)
@@ -44,10 +44,11 @@ class WorkingHour extends Model
 
     public static function getWorkedInterval($workingHours)
     {
-        [$t1, $t2, $t3, $t4] = self::getTimes($workingHours);
+        [$t1, $t2, $t3, $t4, $t5, $t6] = self::getTimes($workingHours);
 
         $part1 = new DateInterval('PT0S');
         $part2 = new DateInterval('PT0S');
+        $part3 = new DateInterval('PT0S');
 
         if ($t1) {
             $part1 = $t1->diff(new DateTime());
@@ -65,7 +66,20 @@ class WorkingHour extends Model
             $part2 = $t3->diff($t4);
         }
 
-        return DateUtils::sumIntervals($part1, $part2);
+        if ($t5) {
+            $part3 = $t5->diff(new DateTime());
+        }
+
+        if ($t6) {
+            $part3 = $t5->diff($t6);
+        }
+
+        $interval = DateUtils::sumIntervals($part1, $part2);
+        if ($t5) {
+            $interval = DateUtils::sumIntervals($part1, $part2, $part3);
+        }
+
+        return $interval;
     }
 
     public static function getLunchInterval($workingHours)
@@ -123,6 +137,10 @@ class WorkingHour extends Model
             return 'time3';
         } else if (!$workingHours->time4) {
             return 'time4';
+        } else if (!$workingHours->time5) {
+            return 'time5';
+        } else if (!$workingHours->time6) {
+            return 'time6';
         } else {
             return null;
         }
@@ -158,6 +176,8 @@ class WorkingHour extends Model
             $workingHours->time2 ? array_push($times, DateUtils::getDateFromString($workingHours->time2)) : array_push($times, null);
             $workingHours->time3 ? array_push($times, DateUtils::getDateFromString($workingHours->time3)) : array_push($times, null);
             $workingHours->time4 ? array_push($times, DateUtils::getDateFromString($workingHours->time4)) : array_push($times, null);
+            $workingHours->time5 ? array_push($times, DateUtils::getDateFromString($workingHours->time5)) : array_push($times, null);
+            $workingHours->time6 ? array_push($times, DateUtils::getDateFromString($workingHours->time6)) : array_push($times, null);
         }
         return $times;
     }
