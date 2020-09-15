@@ -40,6 +40,10 @@ class MonthlyReportController extends Controller
         if ($user->is_admin) {
             $users = User::get();
             $selectedUserId = $request->input('user') ? intval($request->input('user')) : $user->id;
+            $userSel = $user;
+            if (intval($selectedUserId) !== intval($request->input('user'))) {
+                $userSel = User::find($selectedUserId);
+            }
         }
 
         $selectedPeriod = $request->input('period') ? $request->input('period') : $currentDate->format('Y-m');
@@ -70,9 +74,9 @@ class MonthlyReportController extends Controller
             }
         }
 
-        $totalBalanceTime = (WorkingHour::where('user_id', $user->id)
+        $totalBalanceTime = (WorkingHour::where('user_id', $userSel->id)
             ->where('work_date', '<', ($selectedPeriod . '-' . sprintf('%02d', 1)))
-            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($user->time_balance);
+            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($userSel->time_balance);
 
         $totalBalance = DateUtils::getTimeStringFromSeconds($totalBalanceTime);
         if ($totalBalanceTime > 0) {
