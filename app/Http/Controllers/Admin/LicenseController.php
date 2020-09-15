@@ -340,7 +340,7 @@ class LicenseController extends Controller
                         $workingHours->subscriber_id = Auth::user()->subscriber_id;
                         $workingHours->user_id = $license->user_id;
                         $workingHours->work_date = $workDate;
-                        $workingHours->worked_time = Constants::DAILY_TIME * (-1);
+                        $workingHours->worked_time = 0;
                         $workingHours->status = 'discounted-vocation';
                         $workingHours->save();
                     }
