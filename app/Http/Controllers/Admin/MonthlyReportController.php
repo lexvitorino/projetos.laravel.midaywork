@@ -40,11 +40,9 @@ class MonthlyReportController extends Controller
         if ($user->is_admin) {
             $users = User::get();
             $selectedUserId = $request->input('user') ? intval($request->input('user')) : $user->id;
-            $userSel = $user;
-            if (intval($selectedUserId) !== intval($request->input('user'))) {
-                $userSel = User::find($selectedUserId);
-            }
         }
+
+        $userSel = User::find($selectedUserId);
 
         $selectedPeriod = $request->input('period') ? $request->input('period') : $currentDate->format('Y-m');
         $periods = $this->getPeriods();
