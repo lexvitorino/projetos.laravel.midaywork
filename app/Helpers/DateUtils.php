@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use DateInterval;
+use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
 use LengthException;
@@ -61,6 +62,11 @@ class DateUtils
 
     public static function getDateFromString($str)
     {
+        return DateTimeImmutable::createFromFormat('Y-m-d', $str);
+    }
+
+    public static function getTimeFromString($str)
+    {
         return DateTimeImmutable::createFromFormat('H:i:s', $str);
     }
 
@@ -114,8 +120,9 @@ class DateUtils
         return "";
     }
 
-    public static function getSecondsToTimeString($strTime){
-        if($strTime != ""){
+    public static function getSecondsToTimeString($strTime)
+    {
+        if ($strTime != "") {
             $array = explode(":", $strTime);
             $h = intval($array[0]);
             $m = intval($array[1]);
@@ -124,5 +131,24 @@ class DateUtils
             return $hToS + $mToS + intval($array[2]);
         }
         return 0;
-     }
+    }
+
+    public static function getWorkingDays($date1, $date2)
+    {
+        $days = 0;
+
+        $begin = new DateTime($date1);
+        $end = (new DateTime($date2))->modify('+1 day');
+
+        $interval = DateInterval::createFromDateString('1 day');
+        $period = new DatePeriod($begin, $interval, $end);
+
+        foreach ($period as $dt) {
+            if (!self::isWeekend($dt)) {
+                $days++;
+            }
+        }
+
+        return $days;
+    }
 }

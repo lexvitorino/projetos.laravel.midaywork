@@ -42,7 +42,7 @@
         </tbody>
     </table>
 
-    {{ $users->links("admin.users.pagination") }}
+    {{ $users->links("admin.layouts.pagination") }}
 
 </main>
 @endsection

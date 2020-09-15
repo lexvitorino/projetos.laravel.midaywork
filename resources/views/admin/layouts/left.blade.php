@@ -26,6 +26,12 @@
                     Usuários
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('licenses.index') }}">
+                    <i class="icofont-history mr-2"></i>
+                    Licença
+                </a>
+            </li>
             @endif
         </ul>
     </nav>

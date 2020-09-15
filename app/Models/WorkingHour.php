@@ -172,12 +172,12 @@ class WorkingHour extends Model
     {
         $times = [];
         if ($workingHours) {
-            $workingHours->time1 ? array_push($times, DateUtils::getDateFromString($workingHours->time1)) : array_push($times, null);
-            $workingHours->time2 ? array_push($times, DateUtils::getDateFromString($workingHours->time2)) : array_push($times, null);
-            $workingHours->time3 ? array_push($times, DateUtils::getDateFromString($workingHours->time3)) : array_push($times, null);
-            $workingHours->time4 ? array_push($times, DateUtils::getDateFromString($workingHours->time4)) : array_push($times, null);
-            $workingHours->time5 ? array_push($times, DateUtils::getDateFromString($workingHours->time5)) : array_push($times, null);
-            $workingHours->time6 ? array_push($times, DateUtils::getDateFromString($workingHours->time6)) : array_push($times, null);
+            $workingHours->time1 ? array_push($times, DateUtils::getTimeFromString($workingHours->time1)) : array_push($times, null);
+            $workingHours->time2 ? array_push($times, DateUtils::getTimeFromString($workingHours->time2)) : array_push($times, null);
+            $workingHours->time3 ? array_push($times, DateUtils::getTimeFromString($workingHours->time3)) : array_push($times, null);
+            $workingHours->time4 ? array_push($times, DateUtils::getTimeFromString($workingHours->time4)) : array_push($times, null);
+            $workingHours->time5 ? array_push($times, DateUtils::getTimeFromString($workingHours->time5)) : array_push($times, null);
+            $workingHours->time6 ? array_push($times, DateUtils::getTimeFromString($workingHours->time6)) : array_push($times, null);
         }
         return $times;
     }
@@ -186,6 +186,14 @@ class WorkingHour extends Model
 
     function getBalance()
     {
+        if ($this->status === 'bonus-vocation') {
+            return "00:00:00";
+        }
+
+        if ($this->status === 'discounted-vocation') {
+            return "-08:00:00";
+        }
+
         if (empty($this->time1)) {
             return '';
         }

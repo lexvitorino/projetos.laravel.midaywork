@@ -53,12 +53,20 @@
                 @foreach($report as $registry)
                 <tr>
                     <td>{{ $registry->formatDateWithLocale($registry->work_date) }}</td>
+                    @if(empty($registry->status) || $registry->status === 'normal')
                     <td>{{ $registry->time1 }}</td>
                     <td>{{ $registry->time2 }}</td>
                     <td>{{ $registry->time3 }}</td>
                     <td>{{ $registry->time4 }}</td>
                     <td>{{ $registry->time5 }}</td>
                     <td>{{ $registry->time6 }}</td>
+                    @endif
+                    @if($registry->status === 'bonus-vocation')
+                    <td colspan="6" class="bg-success"> Férias abonadas </td>
+                    @endif
+                    @if($registry->status === 'discounted-vocation')
+                    <td colspan="6" class="bg-info"> Férias descontadas em banco de horas </td>
+                    @endif
                     <td>{{ $registry->getBalance() }}</td>
                 </tr>
                 @endforeach

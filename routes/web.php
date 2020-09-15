@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\Admin;
-use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +27,9 @@ Route::prefix('painel')->group(function () {
     Route::get('register', [Admin\Auth\RegisterController::class, 'index'])->name('register');
     Route::post('register', [Admin\Auth\RegisterController::class, 'store']);
 
-    Route::resource('users', Admin\UsersController::class);
+    Route::resource('users', Admin\UserController::class);
+
+    Route::resource('licenses', Admin\LicenseController::class);
 
     Route::get('dayRecord', [Admin\DayRecordController::class, 'index'])->name('dayRecord');
     Route::post('dayRecord', [Admin\DayRecordController::class, 'store']);

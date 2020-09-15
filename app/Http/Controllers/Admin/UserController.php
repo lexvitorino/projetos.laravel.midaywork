@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -131,7 +131,7 @@ class UsersController extends Controller
     {
         $user = User::where("subscriber_id", Auth::user()->subscriber_id)->where('id', $id)->first();
         if (!$user) {
-            $this->get();
+            $this->back();
         }
 
         $data = $request->only([
@@ -177,7 +177,6 @@ class UsersController extends Controller
             if (!empty($data['password'])) {
                 if (strlen($data['password']) < 4) {
                     $validator->errors()->add('password', 'Password não atende ao tamanho mínimo de 4 caracteres.');
-                    var_dump('Password não atende ao tamanho mínimo de 4 caracteres.');
                 } else if ($data['password'] != $data['password_confirmation']) {
                     $validator->errors()->add('password', 'Campo password não compátivel.');
                 } else if (empty($data['password_confirmation'])) {
