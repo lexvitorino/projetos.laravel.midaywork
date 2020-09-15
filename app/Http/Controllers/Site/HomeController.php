@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('site.home');
+        return redirect()->route('dayRecord');
+        //return view('site.home');
     }
 }

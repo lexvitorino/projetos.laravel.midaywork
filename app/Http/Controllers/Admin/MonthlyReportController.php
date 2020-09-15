@@ -86,7 +86,7 @@ class MonthlyReportController extends Controller
         }
 
         $expectedTime = $workDay * Constants::DAILY_TIME;
-        $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime) + $totalBalanceTime);
+        $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime + $totalBalanceTime));
         $sign = ($sumOfWorkedTime >= $expectedTime) ? '+' : '-';
 
         return view('admin.monthlyReport', [

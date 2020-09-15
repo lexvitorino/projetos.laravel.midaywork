@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
-    return "Cache is cleared";
-});
-
 Route::get('/', [Site\HomeController::class, 'index']);
 
 Route::prefix('painel')->group(function () {

@@ -65,7 +65,7 @@ class DayRecordController extends Controller
         }
 
         $user = Auth::user();
-        $workingHours = WorkingHour::loadFromUserAndDate($user->sibscriber_id, $user->id, date('Y-m-d'));
+        $workingHours = WorkingHour::loadFromUserAndDate($user->subscriber_id, $user->id, $workDate);
 
         if (!$workingHours) {
             $workingHours->user_id = Auth::id();
