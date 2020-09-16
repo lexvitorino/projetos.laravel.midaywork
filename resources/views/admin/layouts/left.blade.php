@@ -13,6 +13,12 @@
                     Relatório Mensal
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('licenses.index') }}">
+                    <i class="icofont-history mr-2"></i>
+                    Licença
+                </a>
+            </li>
             @if($user->is_admin)
             <li class="nav-item">
                 <a href="{{ route('managerReport') }}">
@@ -24,12 +30,6 @@
                 <a href="{{ route('users.index') }}">
                     <i class="icofont-users mr-2"></i>
                     Usuários
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('licenses.index') }}">
-                    <i class="icofont-history mr-2"></i>
-                    Licença
                 </a>
             </li>
             @endif
