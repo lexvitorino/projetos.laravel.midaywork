@@ -51,6 +51,7 @@ class MonthlyReportController extends Controller
 
         $report = [];
         $workDay = 0;
+        $bonusDay = 0;
         $sumOfWorkedTime = 0;
         $lastDay = DateUtils::getLastDayOfMonth($selectedPeriod)->format('d');
 
@@ -61,8 +62,11 @@ class MonthlyReportController extends Controller
                 $registry = $registries[$date];
                 if (DateUtils::isPastWorkday($date)) {
                     $workDay++;
+                    if ($registry->status === 'bonus-vocation') {
+                        $bonusDay++;
+                    }
                 }
-                $sumOfWorkedTime += $registry->worked_time;
+                $sumOfWorkedTime += $registry->worked_time ?? 0;
                 array_push($report, $registry);
             } catch (\Throwable $th) {
                 array_push($report, new WorkingHour([
@@ -85,9 +89,9 @@ class MonthlyReportController extends Controller
             $signBalance = '';
         }
 
-        $expectedTime = $workDay * Constants::DAILY_TIME;
+        $expectedTime = ($workDay - $bonusDay) * Constants::DAILY_TIME;
         $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime + $totalBalanceTime));
-        $sign = ($sumOfWorkedTime >= $expectedTime) ? '+' : '-';
+        $sign = (($sumOfWorkedTime + $totalBalanceTime) >= $expectedTime) ? '+' : '-';
 
         return view('admin.monthlyReport', [
             'title' => (object) ['icon' => 'icofont-ui-calendar', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
