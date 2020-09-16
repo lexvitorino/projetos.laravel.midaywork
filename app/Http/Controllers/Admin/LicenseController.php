@@ -25,7 +25,6 @@ class LicenseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:admin');
     }
 
     /**
@@ -35,8 +34,15 @@ class LicenseController extends Controller
      */
     public function index()
     {
-        $licenses = License::where("subscriber_id", Auth::user()->subscriber_id)
-            ->paginate(5);
+        $user = Auth::user();
+        if (!$user->is_admin) {
+            $licenses = License::where("subscriber_id", Auth::user()->subscriber_id)
+                ->where('user_id', $user->id)
+                ->paginate(5);
+        } else {
+            $licenses = License::where("subscriber_id", Auth::user()->subscriber_id)
+                ->paginate(5);
+        }
 
         return view('admin.licenses.index', [
             'title' => (object) ['icon' => 'icofont-history', 'title' => 'Licenças', 'subtitle' => 'Cadastre as licenças e férias dos colaboradores',],

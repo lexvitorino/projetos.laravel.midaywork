@@ -35,10 +35,13 @@
                 <td>{{ $license->formatDateWithLocale($license->start_discount_date) }}</td>
                 <td>{{ $license->formatDateWithLocale($license->end_discount_date) }}</td>
                 <td>
+                    @if($license->status === 'forecast' || $license->status === 'denied')
                     <a href="{{ route('licenses.edit',  ['license' => $license->id]) }}" title="Editar"
                         class="btn btn-warning rounded-circle mr-2">
                         <i class="icofont-edit"></i>
                     </a>
+                    @endif
+                    @if($license->status === 'forecast' || $license->status === 'denied')
                     <form class="d-inline" method="POST" action="{{ route('licenses.destroy',  ['license' => $license->id]) }}" onsubmit="return confirm('Tem certeza que deseja excluir?')">
                         @method('DELETE')
                         @csrf
@@ -46,6 +49,7 @@
                             <i class="icofont-trash"></i>
                         </button>
                     </form>
+                    @endif
                 </td>
                 <td>
                     @if($user->is_admin && $license->status !== 'processed' && $license->status !== 'approved')
