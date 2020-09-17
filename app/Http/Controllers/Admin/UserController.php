@@ -136,7 +136,7 @@ class UserController extends Controller
         }
 
         $data = $request->only([
-            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance', 'signal'
+            'id', 'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance', 'signal'
         ]);
 
         $validator = $this->editValidation($user, $data);
