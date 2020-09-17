@@ -7,17 +7,15 @@
 <table>
     <thead>
         <th>Nome</th>
-        <th class="th-w-25">Saldo</th>
+        <th>Saldo</th>
     </thead>
     <tbody>
+        @foreach($balances as $b)
         <tr>
-            <td>Eu</td>
-            <td>00:00:00</td>
+            <td>{{ $b->name }}</td>
+            <td class="text-right">{{ $b->balance }}</td>
         </tr>
-        <tr>
-            <td>Eu</td>
-            <td>00:00:00</td>
-        </tr>
+        @endforeach
     </tbody>
 </table>
 @endcomponent

@@ -121,6 +121,8 @@ class ManagerReportController extends Controller
             );
         }
 
+        session('balances', $balances);
+
         return $balances;
     }
 
@@ -145,7 +147,21 @@ class ManagerReportController extends Controller
 
     private function sendMail()
     {
-        Mail::send(new Balance(null, null));
+        $user = Auth::user();
+
+        $users = User::where('subscriber_id', $user->subscriber_id)
+            ->where('is_admin', 1)
+            ->get();
+
+        $toList = [];
+        foreach ($users as $u) {
+            $toList[] = (object) [
+                'email' => $u->email,
+                'name' => $u->name,
+            ];
+        }
+
+        Mail::send(new Balance($toList, session('balances')));
         return redirect()->route("managerReport");
     }
 }

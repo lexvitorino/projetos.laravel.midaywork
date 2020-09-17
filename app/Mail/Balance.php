@@ -11,7 +11,7 @@ class Balance extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $user;
+    private $toList;
     private $balances;
 
     /**
@@ -19,9 +19,9 @@ class Balance extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $balances)
+    public function __construct($toList, $balances)
     {
-        $this->user = $user;
+        $this->toList = $toList;
         $this->balances = $balances;
     }
 
@@ -33,11 +33,10 @@ class Balance extends Mailable
     public function build()
     {
         $this->subject('Banco de Horas');
-        //$this->to($this->user->email, $this->user->name);
-        $this->to("lex.vitorino@gmail.com", "Alex Sousa");
+        $this->to($this->toList);
 
         return $this->markdown('admin.mail.balance', [
-            'balance' => $this->balances
+            'balances' => $this->balances
         ]);
     }
 }
