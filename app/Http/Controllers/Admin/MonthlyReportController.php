@@ -10,7 +10,6 @@ use App\Models\WorkingHour;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 
 class MonthlyReportController extends Controller
 {

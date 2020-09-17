@@ -146,5 +146,6 @@ class ManagerReportController extends Controller
     private function sendMail()
     {
         Mail::send(new Balance(null, null));
+        return redirect()->route("managerReport");
     }
 }

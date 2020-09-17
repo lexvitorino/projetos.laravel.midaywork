@@ -33,7 +33,8 @@ class Balance extends Mailable
     public function build()
     {
         $this->subject('Banco de Horas');
-        // $this->to($this->user->email, $this->user->name);
+        //$this->to($this->user->email, $this->user->name);
+        $this->to("lex.vitorito@gmail.com", "Alex Sousa");
 
         return $this->markdown('admin.mail.balance', [
             'balance' => $this->balances
