@@ -80,18 +80,14 @@ class MonthlyReportController extends Controller
             ->where('work_date', '<', ($selectedPeriod . '-' . sprintf('%02d', 1)))
             ->sum('worked_time')) + DateUtils::getSecondsToTimeString($userSel->time_balance);
 
-        $totalBalance = DateUtils::getTimeStringFromSeconds($totalBalanceTime);
-        if ($totalBalanceTime > 0) {
-            $signBalance = '+';
-        } else if ($totalBalanceTime < 0) {
-            $signBalance = '-';
-        } else {
-            $signBalance = '';
+        if ($userSel->signal === '-') {
+            $totalBalanceTime = $totalBalanceTime * (-1);
         }
 
+        $totalBalance = DateUtils::getTimeStringFromSeconds($totalBalanceTime);
+
         $expectedTime = ($workDay - $bonusDay) * Constants::DAILY_TIME;
-        $balance = DateUtils::getTimeStringFromSeconds(abs($sumOfWorkedTime - $expectedTime + $totalBalanceTime));
-        $sign = (($sumOfWorkedTime + $totalBalanceTime) >= $expectedTime) ? '+' : '-';
+        $balance = DateUtils::getTimeStringFromSeconds($sumOfWorkedTime - $expectedTime + $totalBalanceTime);
 
         return view('admin.monthlyReport', [
             'title' => (object) ['icon' => 'icofont-ui-calendar', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
@@ -99,8 +95,8 @@ class MonthlyReportController extends Controller
             'user' => $user,
             'report' => $report,
             'sumOfWorkedTime' => DateUtils::getTimeStringFromSeconds($sumOfWorkedTime),
-            'balance' => "{$sign}{$balance}",
-            'totalBalance' => (object) ['balance' => "{$signBalance}{$totalBalance}", 'class' => ($totalBalance < 0 ? 'danger' : 'success')],
+            'balance' => $balance,
+            'totalBalance' => (object) ['balance' => "{$totalBalance}", 'class' => (($userSel->signal === '-') ? 'danger' : 'success')],
             'selectedPeriod' => $selectedPeriod,
             'periods' => $periods,
             'selectedUserId' => $selectedUserId

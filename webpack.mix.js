@@ -43,6 +43,7 @@ mix.copy("resources/views/site/img", "public/site/img", false)
     .styles(["resources/views/auth/css/style.css"], "public/auth/css/style.css")
 
     // global
+    .copy("resources/img", "public/img", false)
     .copy("resources/css/fonts", "public/css/fonts", false)
 
     .scripts(["node_modules/jquery/dist/jquery.js"], "public/js/jquery.js")

@@ -266,3 +266,8 @@ table th.th-w-15 {
 table th.th-w-25 {
     width: 25%
 }
+
+.card-icon {
+    font-size: 4rem;
+    cursor: pointer;
+}

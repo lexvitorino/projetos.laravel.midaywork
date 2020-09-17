@@ -58,7 +58,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->only([
-            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance'
+            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance', 'signal'
         ]);
 
         $validator = Validator::make($data, [
@@ -81,6 +81,7 @@ class UserController extends Controller
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
         $user->time_balance = $data['time_balance'];
+        $user->signal = $data['signal'];
         $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
         $user->save();
 
@@ -135,7 +136,7 @@ class UserController extends Controller
         }
 
         $data = $request->only([
-            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance'
+            'name', 'email', 'password', 'password_confirmation', 'start_date', 'end_date', 'is_admin', 'time_balance', 'signal'
         ]);
 
         $validator = $this->editValidation($user, $data);
@@ -151,6 +152,7 @@ class UserController extends Controller
         $user->start_date = $data['start_date'];
         $user->end_date = $data['end_date'];
         $user->time_balance = $data['time_balance'];
+        $user->signal = $data['signal'];
         $user->is_admin = (($data['is_admin'] ?? 'off') == 'on') ? true : false;
         $user->save();
 

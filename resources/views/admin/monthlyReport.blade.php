@@ -31,7 +31,7 @@
 			</div>
         </form>
 
-        @if(intval($totalBalance->balance) !== 0)
+        @if(!empty($totalBalance->balance))
         <div role="alert" class="my-3 alert alert-{{ $totalBalance->class }} text-right">
             Saldo Anterior :: {{ $totalBalance->balance }}
         </div>

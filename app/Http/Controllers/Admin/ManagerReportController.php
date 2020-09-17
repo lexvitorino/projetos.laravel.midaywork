@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\Constants;
 use App\Helpers\DateUtils;
 use App\Http\Controllers\Controller;
+use App\Mail\Balance;
 use App\Models\User;
 use App\Models\WorkingHour;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ManagerReportController extends Controller
 {
@@ -33,7 +36,6 @@ class ManagerReportController extends Controller
         $currentDate = new DateTime();
 
         $user = Auth::user();
-        $users = User::where('subscriber_id', $user->subscriber_id)->get();
 
         $activeUsersCount = User::where('subscriber_id', Auth::user()->subscriber_id)
             ->whereNull('end_date')
@@ -61,13 +63,88 @@ class ManagerReportController extends Controller
 
         $hoursInMonth = explode(':', DateUtils::getTimeStringFromSeconds($secondsInMonth))[0];
 
+        $balances = $this->getBalances();
+
         return view('admin.managerReport', [
             'title' => (object) ['icon' => 'icofont-chart-histogram', 'title' => 'Relatório Gerêncial', 'subtitle' => 'Acompanhe seu saldo de horas',],
-            'users' => $users,
             'user' => $user,
             'activeUsersCount' => $activeUsersCount ?? '',
             'hoursInMonth' => $hoursInMonth ?? '',
             'absentUsers' => $absentUsers ?? [],
+            'balances' => $balances ?? []
         ]);
+    }
+
+    private function getBalances()
+    {
+        $currentDate = new DateTime();
+        $balances = [];
+
+        $user = Auth::user();
+        $users = User::where('subscriber_id', $user->subscriber_id)->get();
+
+        foreach ($users as $u) {
+            $timeBalance = DateUtils::getSecondsToTimeString($u->time_balance);
+
+            if ($u->signal === '-') {
+                $timeBalance = $timeBalance * (-1);
+            }
+
+            $sumOfWorkedTime = (WorkingHour::where('user_id', $u->id)
+                ->where('work_date', '<', $currentDate)
+                ->where('time4', '!=', "")
+                ->sum('worked_time'));
+
+            $workDay = (WorkingHour::where('user_id', $u->id)
+                ->where('work_date', '<', $currentDate)
+                ->where('time4', '!=', "")
+                ->where('status', 'normal')
+                ->count());
+
+            $discounted = (WorkingHour::where('user_id', $u->id)
+                ->where('work_date', '<', $currentDate)
+                ->where('status', 'discounted-vocation')
+                ->count());
+
+            $bonusDay = (WorkingHour::where('user_id', $u->id)
+                ->where('work_date', '<', $currentDate)
+                ->where('time4', '!=', "")
+                ->where('status', 'bonus-vocation')
+                ->count());
+
+            $expectedTime = ($workDay + $discounted - $bonusDay) * Constants::DAILY_TIME;
+            $balance = DateUtils::getTimeStringFromSeconds($sumOfWorkedTime - $expectedTime + $timeBalance);
+
+            $balances[] = (object) array(
+                "name" => $u->name,
+                "balance" => $balance
+            );
+        }
+
+        return $balances;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function execute(Request $request)
+    {
+        $action = $request->input('action');
+        switch ($action) {
+            case 'sendMail':
+                return $this->sendMail();
+                break;
+            default:
+                return $this->save($request);
+                break;
+        }
+    }
+
+    private function sendMail()
+    {
+        Mail::send(new Balance(null, null));
     }
 }

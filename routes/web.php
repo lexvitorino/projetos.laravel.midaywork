@@ -15,6 +15,12 @@ use App\Http\Controllers\Admin;
 |
 */
 
+Route::get('testMail', function() {
+    $user = null;
+    $balances = [];
+    return new \App\Mail\Balance($user, $balances);
+});
+
 Route::get('/', [Site\HomeController::class, 'index']);
 
 Route::prefix('painel')->group(function () {
@@ -38,4 +44,5 @@ Route::prefix('painel')->group(function () {
     Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
 
     Route::get('managerReport', [Admin\ManagerReportController::class, 'index'])->name('managerReport');
+    Route::post('managerReport', [Admin\ManagerReportController::class, 'execute']);
 });
