@@ -61,7 +61,9 @@
                             <form class="d-inline" method="POST" action="{{ route('managerReport') }}" onsubmit="return confirm('Enviar e-mail com os saldos de banco horas para o responsável?')">
                                 @csrf
                                 <input type="hidden" name="action" value="sendMail" />
+                                <button class="btn btn-outline-danger rounded-circle" title="Enviar Email">
                                     <i class="card-icon icofont-send-mail"></i>
+                                </button>
                             </form>
                         </div>
                     </div>
