@@ -16,9 +16,35 @@ use App\Http\Controllers\Admin;
 */
 
 Route::get('testMail', function() {
-    $user = null;
-    $balances = [];
-    return new \App\Mail\Balance($user, $balances);
+    $toList = [
+        (object) [
+            'name' => 'Alex Sousa',
+            'email' => 'lex.vitorino@gmail.com'
+        ],
+        (object) [
+            'name' => 'RH',
+            'email' => 'jdanireis@gmail.com'
+        ]
+    ];
+    $balances = [
+        (object) [
+            'name' => 'Fulano 1',
+            'balance' => '00:00:00',
+        ],
+        (object) [
+            'name' => 'Fulano 2',
+            'balance' => '00:02:00',
+        ],
+        (object) [
+            'name' => 'Fulano 3',
+            'balance' => '00:03:00',
+        ],
+        (object) [
+            'name' => 'Fulano 4',
+            'balance' => '00:04:00',
+        ]
+    ];
+    return new \App\Mail\Balance($toList, $balances);
 });
 
 Route::get('/', [Site\HomeController::class, 'index']);

@@ -12,6 +12,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class ManagerReportController extends Controller
 {
@@ -121,7 +122,7 @@ class ManagerReportController extends Controller
             );
         }
 
-        session('balances', $balances);
+        Session::flash('balances', $balances);
 
         return $balances;
     }
@@ -161,7 +162,9 @@ class ManagerReportController extends Controller
             ];
         }
 
-        Mail::send(new Balance($toList, session('balances')));
+        // var_dump($toList, Session::get('balances')); exit;
+
+        Mail::send(new Balance($toList, Session::get('balances')));
         return redirect()->route("managerReport");
     }
 }
