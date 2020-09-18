@@ -74,6 +74,7 @@
                     @if($user->is_admin)
                     <td>
                         <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo?')">
+                            @method('POST')
                             @csrf
                             <input type="hidden" name="action" value="calcBalance" />
                             <input type="hidden" name="id" value="$registry->id" />

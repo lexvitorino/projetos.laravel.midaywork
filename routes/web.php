@@ -35,8 +35,8 @@ Route::prefix('painel')->group(function () {
     Route::post('dayRecord', [Admin\DayRecordController::class, 'store']);
 
     Route::get('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
-    Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
-    Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'execute']);
+    Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index']);
+    Route::put('monthlyReport', [Admin\MonthlyReportController::class, 'execute']);
 
     Route::get('managerReport', [Admin\ManagerReportController::class, 'index'])->name('managerReport');
     Route::post('managerReport', [Admin\ManagerReportController::class, 'execute']);
