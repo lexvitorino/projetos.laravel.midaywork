@@ -74,7 +74,7 @@
                             @method('POST')
                             @csrf
                             <input type="hidden" name="action" value="calcBalance" />
-                            <input type="hidden" name="id" value="$registry->id" />
+                            <input type="hidden" name="id" value="{{$registry->id}}" />
                             <button type="submit" class="btn btn-sm btn-link" title="Recalcular saldo">
                                 <i class="icofont-refresh"></i>
                             </button>
