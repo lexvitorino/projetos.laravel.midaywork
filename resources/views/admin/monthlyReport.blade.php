@@ -48,9 +48,6 @@
                 <th>Entrada 3</th>
                 <th>Saída 3</th>
                 <th>Saldo</th>
-                @if($user->is_admin)
-                <th style="width: 10px"></th>
-                @endif
             </thead>
             <tbody>
                 @foreach($report as $registry)
@@ -72,7 +69,7 @@
                     @endif
                     <td>{{ $registry->getBalance() }}</td>
                     @if($user->is_admin)
-                    <td>
+                    <td style="width: 10px">
                         <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo?')">
                             @method('POST')
                             @csrf
