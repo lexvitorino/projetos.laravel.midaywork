@@ -53,11 +53,11 @@
             <div class="card mt-4">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-10">
+                        <div class="col-9">
                             <h4 class="card-title">Banco de Horas</h4>
                             <p class="card-category mb-0">Relação dos funcionários que possuem banco e horas</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3 text-right">
                             <form class="d-inline" method="POST" action="{{ route('managerReport') }}" onsubmit="return confirm('Enviar e-mail com os saldos de banco horas para o responsável?')">
                                 @csrf
                                 <input type="hidden" name="action" value="sendMail" />

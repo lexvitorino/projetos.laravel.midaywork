@@ -102,6 +102,40 @@ class MonthlyReportController extends Controller
         ]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function execute(Request $request)
+    {
+        $action = $request->input('action');
+        switch ($action) {
+            case 'calcBalance':
+                return $this->calcBalance($request);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private function calcBalance(Request $request)
+    {
+        $id = intval($request->input('id'));
+
+        $workingHour = WorkingHour::where('subscriber_id', Auth::user()->subscriber_id)
+            ->where('id', $id)
+            ->first();
+
+        if ($workingHour) {
+            $workingHour->worked_time = DateUtils::getSecondsFromDateInterval(WorkingHour::getWorkedInterval($workingHour));
+            $workingHour->save();
+        }
+
+        return redirect()->route("monthlyReport");
+    }
+
     private function getPeriods()
     {
         $periods = [];

@@ -6,29 +6,29 @@
     @include('admin.layouts.title')
     @include('admin.layouts.message')
 
-	<div>
-		<form class="mb-4" action="{{ route('monthlyReport') }}" method="post">
+    <div>
+        <form class="mb-4" action="{{ route('monthlyReport') }}" method="post">
             @csrf
-			<div class="input-group">
-				@if($user->is_admin)
-					<select name="user" class="form-control mr-2" placeholder="Selecione o usuário...">
-						<option value="">Selecione o usuário</option>
-                        @foreach($users as $user)
-                        {{ $selected = $user->id === $selectedUserId ? 'selected' : '' }}
-						<option value='{{$user->id}}' {{$selected}}>{{$user->name}}</option>
-						@endforeach
-					</select>
-				@endif
-				<select name="period" class="form-control" placeholder="Selecione o período...">
+            <div class="input-group">
+                @if($user->is_admin)
+                <select name="user" class="form-control mr-2" placeholder="Selecione o usuário...">
+                    <option value="">Selecione o usuário</option>
+                    @foreach($users as $u)
+                    {{ $selected = $u->id === $selectedUserId ? 'selected' : '' }}
+                    <option value='{{$u->id}}' {{$selected}}>{{$u->name}}</option>
+                    @endforeach
+                </select>
+                @endif
+                <select name="period" class="form-control" placeholder="Selecione o período...">
                     @foreach($periods as $key => $month)
                     {{ $selected = $key === $selectedPeriod ? 'selected' : '' }}
                     <option value='{{$key}}' {{$selected}}>{{$month}}</option>
                     @endforeach
-				</select>
-				<button type="submit" class="btn btn-primary ml-2">
-					<i class="icofont-search"></i>
-				</button>
-			</div>
+                </select>
+                <button type="submit" class="btn btn-primary ml-2">
+                    <i class="icofont-search"></i>
+                </button>
+            </div>
         </form>
 
         @if(!empty($totalBalance->balance))
@@ -37,19 +37,22 @@
         </div>
         @endif
 
-		<table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover">
 
-			<thead>
-				<th>Dia</th>
-				<th>Entrada 1</th>
-				<th>Saída 1</th>
-				<th>Entrada 2</th>
-				<th>Saída 2</th>
-				<th>Entrada 3</th>
-				<th>Saída 3</th>
-				<th>Saldo</th>
-			</thead>
-			<tbody>
+            <thead>
+                <th>Dia</th>
+                <th>Entrada 1</th>
+                <th>Saída 1</th>
+                <th>Entrada 2</th>
+                <th>Saída 2</th>
+                <th>Entrada 3</th>
+                <th>Saída 3</th>
+                <th>Saldo</th>
+                @if($user->is_admin)
+                <th style="width: 10px"></th>
+                @endif
+            </thead>
+            <tbody>
                 @foreach($report as $registry)
                 <tr>
                     <td>{{ $registry->formatDateWithLocale($registry->work_date) }}</td>
@@ -68,16 +71,28 @@
                     <td colspan="6" class="bg-info"> Férias descontadas em banco de horas </td>
                     @endif
                     <td>{{ $registry->getBalance() }}</td>
+                    @if($user->is_admin)
+                    <td>
+                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo?')">
+                            @csrf
+                            <input type="hidden" name="action" value="calcBalance" />
+                            <input type="hidden" name="id" value="$registry->id" />
+                            <button type="submit" class="btn btn-sm btn-link" title="Recalcular saldo">
+                                <i class="icofont-refresh"></i>
+                            </button>
+                        </form>
+                    </td>
+                    @endif
                 </tr>
                 @endforeach
-				<tr class="bg-primary text-white">
-					<td>Horas Trabalhadas</td>
-					<td colspan="5">{{ $sumOfWorkedTime }}</td>
-					<td>Saldo Mensal</td>
-					<td>{{ $balance }}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+                <tr class="bg-primary text-white">
+                    <td>Horas Trabalhadas</td>
+                    <td colspan="5">{{ $sumOfWorkedTime }}</td>
+                    <td>Saldo Mensal</td>
+                    <td>{{ $balance }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 @endsection

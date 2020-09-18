@@ -15,38 +15,6 @@ use App\Http\Controllers\Admin;
 |
 */
 
-Route::get('testMail', function() {
-    $toList = [
-        (object) [
-            'name' => 'Alex Sousa',
-            'email' => 'lex.vitorino@gmail.com'
-        ],
-        (object) [
-            'name' => 'RH',
-            'email' => 'jdanireis@gmail.com'
-        ]
-    ];
-    $balances = [
-        (object) [
-            'name' => 'Fulano 1',
-            'balance' => '00:00:00',
-        ],
-        (object) [
-            'name' => 'Fulano 2',
-            'balance' => '00:02:00',
-        ],
-        (object) [
-            'name' => 'Fulano 3',
-            'balance' => '00:03:00',
-        ],
-        (object) [
-            'name' => 'Fulano 4',
-            'balance' => '00:04:00',
-        ]
-    ];
-    return new \App\Mail\Balance($toList, $balances);
-});
-
 Route::get('/', [Site\HomeController::class, 'index']);
 
 Route::prefix('painel')->group(function () {
@@ -68,6 +36,7 @@ Route::prefix('painel')->group(function () {
 
     Route::get('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
     Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
+    Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'execute']);
 
     Route::get('managerReport', [Admin\ManagerReportController::class, 'index'])->name('managerReport');
     Route::post('managerReport', [Admin\ManagerReportController::class, 'execute']);
