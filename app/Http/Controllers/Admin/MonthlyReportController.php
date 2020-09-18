@@ -10,6 +10,7 @@ use App\Models\WorkingHour;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class MonthlyReportController extends Controller
 {
@@ -41,7 +42,7 @@ class MonthlyReportController extends Controller
             $selectedUserId = $request->input('user') ? intval($request->input('user')) : $user->id;
         }
 
-        $userSel = User::find($selectedUserId);
+        $selectedUser = User::find($selectedUserId);
 
         $selectedPeriod = $request->input('period') ? $request->input('period') : $currentDate->format('Y-m');
         $periods = $this->getPeriods();
@@ -53,6 +54,9 @@ class MonthlyReportController extends Controller
         $bonusDay = 0;
         $sumOfWorkedTime = 0;
         $lastDay = DateUtils::getLastDayOfMonth($selectedPeriod)->format('d');
+
+        Session::flash('selectedUserId', $selectedUser->id);
+        Session::flash('selectedPeriod', $selectedPeriod);
 
         for ($day = 1; $day <= $lastDay; $day++) {
             $date = $selectedPeriod . '-' . sprintf('%02d', $day);
@@ -75,11 +79,11 @@ class MonthlyReportController extends Controller
             }
         }
 
-        $totalBalanceTime = (WorkingHour::where('user_id', $userSel->id)
+        $totalBalanceTime = (WorkingHour::where('user_id', $selectedUser->id)
             ->where('work_date', '<', ($selectedPeriod . '-' . sprintf('%02d', 1)))
-            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($userSel->time_balance);
+            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($selectedUser->time_balance);
 
-        if ($userSel->signal === '-') {
+        if ($selectedUser->signal === '-') {
             $totalBalanceTime = $totalBalanceTime * (-1);
         }
 
@@ -95,10 +99,10 @@ class MonthlyReportController extends Controller
             'report' => $report,
             'sumOfWorkedTime' => DateUtils::getTimeStringFromSeconds($sumOfWorkedTime),
             'balance' => $balance,
-            'totalBalance' => (object) ['balance' => "{$totalBalance}", 'class' => (($userSel->signal === '-') ? 'danger' : 'success')],
+            'totalBalance' => (object) ['balance' => "{$totalBalance}", 'class' => (($selectedUser->signal === '-') ? 'danger' : 'success')],
             'selectedPeriod' => $selectedPeriod,
             'periods' => $periods,
-            'selectedUserId' => $selectedUserId
+            'selectedUserId' => $selectedUser->id
         ]);
     }
 
@@ -115,6 +119,9 @@ class MonthlyReportController extends Controller
             case 'calcBalance':
                 return $this->calcBalance($request);
                 break;
+            case 'calcBalanceAll':
+                return $this->calcBalanceAll($request);
+                break;
             default:
                 break;
         }
@@ -129,6 +136,30 @@ class MonthlyReportController extends Controller
             ->first();
 
         if ($workingHour) {
+            $workingHour->worked_time = DateUtils::getSecondsFromDateInterval(WorkingHour::getWorkedInterval($workingHour));
+            $workingHour->save();
+        }
+
+        return redirect()->route("monthlyReport");
+    }
+
+    private function calcBalanceAll(Request $request)
+    {
+        $selectedUserId = intval(Session::get('selectedUserId'));
+        $selectedPeriod = Session::get('selectedPeriod');
+
+        $firstDay = DateUtils::getFirstDayOfMonth($selectedPeriod)->format('Y-m-d');
+        $lastDay = DateUtils::getLastDayOfMonth($selectedPeriod)->format('Y-m-d');
+
+        $workingHours = WorkingHour::where('subscriber_id', Auth::user()->subscriber_id)
+            ->where('user_id', $selectedUserId)
+            ->where('status', 'normal')
+            ->where('work_date', '>=', $firstDay)
+            ->where('work_date', '<=', $lastDay)
+            ->get();
+
+        foreach ($workingHours as $w) {
+            $workingHour = WorkingHour::find($w->id);
             $workingHour->worked_time = DateUtils::getSecondsFromDateInterval(WorkingHour::getWorkedInterval($workingHour));
             $workingHour->save();
         }

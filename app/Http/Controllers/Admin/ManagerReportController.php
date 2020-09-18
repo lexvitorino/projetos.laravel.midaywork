@@ -162,8 +162,6 @@ class ManagerReportController extends Controller
             ];
         }
 
-        // var_dump($toList, Session::get('balances')); exit;
-
         Mail::send(new Balance($toList, Session::get('balances')));
         return redirect()->route("managerReport");
     }

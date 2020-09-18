@@ -88,6 +88,18 @@
                     <td colspan="5">{{ $sumOfWorkedTime }}</td>
                     <td>Saldo Mensal</td>
                     <td>{{ $balance }}</td>
+                    @if($user->is_admin)
+                    <td style="width: 10px">
+                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo de todos os dias?')">
+                            @method('PUT')
+                            @csrf
+                            <input type="hidden" name="action" value="calcBalanceAll" />
+                            <button type="submit" class="btn btn-sm btn-link" title="Recalcular todos os dias">
+                                <i class="icofont-refresh" style="color: #fff"></i>
+                            </button>
+                        </form>
+                    </td>
+                    @endif
                 </tr>
             </tbody>
         </table>
