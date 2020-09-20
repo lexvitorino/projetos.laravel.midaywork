@@ -102,22 +102,20 @@ class DayRecordController extends Controller
                 $workingHours->time6 = $currentTime;
                 break;
             default:
-                MessageUtils::warning('Você já fez os quatro apontamentos do dia!');
-                return view("admin.dayRecord", [
-                    'title' => (object) ['icon' => 'icofont-check-alt', 'title' => 'Reistrar Ponto', 'subtitle' => 'Mantenha seu ponto consistente',],
-                    'user' => Auth::user(),
-                    'today' => $today,
-                    'workingHours' => $workingHours,
-                ]);
+                $response['msg'] = "Você já fez os quatro apontamentos do dia!";
+                $response['today'] = $today;
+                $response['workingHours'] = $workingHours;
+                return response()->json($response, 400);
                 break;
         }
 
         $workingHours->worked_time = DateUtils::getSecondsFromDateInterval(WorkingHour::getWorkedInterval($workingHours));
         $workingHours->subscriber_id = $user->subscriber_id;
         $workingHours->save();
+        $response['msg'] = "Ponto recebido com sucesso!";
+        $response['today'] = $today;
+        $response['workingHours'] = $workingHours;
 
-        MessageUtils::success('Ponto recebido com sucesso!');
-
-        return redirect()->route('dayRecord');
+        return response()->json($response);
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,11 @@ use App\Http\Controllers\Admin;
 |
 */
 
-Route::get('/', [Site\HomeController::class, 'index']);
+/*Route::get('/', [Site\HomeController::class, 'index']);*/
+
+Route::get('/', function(){
+    return Redirect::to('/painel', 301);
+});
 
 Route::prefix('painel')->group(function () {
     Route::get('/', [Admin\DayRecordController::class, 'index'])->name('admin');
@@ -32,7 +37,7 @@ Route::prefix('painel')->group(function () {
     Route::resource('licenses', Admin\LicenseController::class);
 
     Route::get('dayRecord', [Admin\DayRecordController::class, 'index'])->name('dayRecord');
-    Route::post('dayRecord', [Admin\DayRecordController::class, 'store']);
+    Route::post('dayRecord', [Admin\DayRecordController::class, 'store'])->name('dayRecord.save');
 
     Route::get('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
     Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index']);

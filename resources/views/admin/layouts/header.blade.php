@@ -9,9 +9,12 @@
     <link rel="stylesheet" href="{{ url(mix('css/bootstrap.css')) }}">
     <link rel="stylesheet" href="{{ url(mix('css/icofont.css')) }}">
     <link rel="stylesheet" href="{{ url(mix('admin/css/style.css')) }}">
+    <script src="{{ url('js/plugins/pace/pace.js') }}"></script>
+    <link rel="stylesheet" href="{{ url('js/plugins/pace/pace-theme-flash.css') }}">
+    @yield('styles')
     <title>{{ $title->title }} | MI Day Work</title>
 </head>
-<body>
+<body style="position: relative">
     <header class="header">
         <div class="logo">
             <i class="icofont-travelling mr-2"></i>
