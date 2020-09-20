@@ -40,6 +40,12 @@
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a href="{{ url('/painel/logout') }}">
+                            <i class="icofont-user mr-2"></i>
+                            Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/painel/logout') }}">
                             <i class="icofont-logout mr-2"></i>
                             Sair
                         </a>
