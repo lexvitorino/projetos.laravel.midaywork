@@ -67,7 +67,7 @@ class ManagerReportController extends Controller
         $balances = $this->getBalances();
 
         return view('admin.managerReport', [
-            'title' => (object) ['icon' => 'icofont-chart-histogram', 'title' => 'Relatório Gerêncial', 'subtitle' => 'Acompanhe seu saldo de horas',],
+            'title' => (object) ['icon' => 'icofont-chart-histogram', 'title' => __('custom.titles.managerReport'), 'subtitle' => __('custom.titles.manage-your-work-team'),],
             'user' => $user,
             'activeUsersCount' => $activeUsersCount ?? '',
             'hoursInMonth' => $hoursInMonth ?? '',

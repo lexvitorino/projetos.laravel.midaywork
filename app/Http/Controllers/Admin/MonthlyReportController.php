@@ -93,7 +93,7 @@ class MonthlyReportController extends Controller
         $balance = DateUtils::getTimeStringFromSeconds($sumOfWorkedTime - $expectedTime + $totalBalanceTime);
 
         return view('admin.monthlyReport', [
-            'title' => (object) ['icon' => 'icofont-ui-calendar', 'title' => 'Relatório Mensal', 'subtitle' => 'Acompanhe seu saldo de horas',],
+            'title' => (object) ['icon' => 'icofont-ui-calendar', 'title' => __('custom.titles.managerReport'), 'subtitle' => __('custom.titles.manage-your-work-team'),],
             'users' => $users,
             'user' => $user,
             'report' => $report,

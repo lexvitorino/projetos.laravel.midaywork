@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="card-footer d-flex justify-content-center">
-            <form class="d-inline" method="POST" action="{{ route('dayRecord.save') }}">
+            <form class="dayRecord d-inline" method="POST" action="{{ route('dayRecord.save') }}">
                 @csrf
                 <button type="submit" class="btn btn-success btn-lg">
                     <i class="icofont-check mr-1"></i>

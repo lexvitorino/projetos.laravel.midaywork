@@ -104,7 +104,7 @@ class DayRecordController extends Controller
                 $workingHours->time6 = $currentTime;
                 break;
             default:
-                $response['msg'] = "Você já fez os quatro apontamentos do dia!";
+                $response['msg'] = __('custom.you-already-made-all-the-notes-of-the-day');
                 $response['today'] = $today;
                 $response['workingHours'] = $workingHours;
                 return response()->json($response, 400);
@@ -114,7 +114,8 @@ class DayRecordController extends Controller
         $workingHours->worked_time = DateUtils::getSecondsFromDateInterval(WorkingHour::getWorkedInterval($workingHours));
         $workingHours->subscriber_id = $user->subscriber_id;
         $workingHours->save();
-        $response['msg'] = "Ponto recebido com sucesso!";
+
+        $response['msg'] = __('custom.point-received-successfully');
         $response['today'] = $today;
         $response['workingHours'] = $workingHours;
 

@@ -11,15 +11,15 @@
             @csrf
             <div class="input-group">
                 @if($user->is_admin)
-                <select name="user" class="form-control mr-2" placeholder="Selecione o usuário...">
-                    <option value="">Selecione o usuário</option>
+                <select name="user" class="form-control mr-2">
+                    <option value="">@lang('custom.select-the-user')</option>
                     @foreach($users as $u)
                     {{ $selected = $u->id === $selectedUserId ? 'selected' : '' }}
                     <option value='{{$u->id}}' {{$selected}}>{{$u->name}}</option>
                     @endforeach
                 </select>
                 @endif
-                <select name="period" class="form-control" placeholder="Selecione o período...">
+                <select name="period" class="form-control">
                     @foreach($periods as $key => $month)
                     {{ $selected = $key === $selectedPeriod ? 'selected' : '' }}
                     <option value='{{$key}}' {{$selected}}>{{$month}}</option>
@@ -33,21 +33,21 @@
 
         @if(!empty($totalBalance->balance))
         <div role="alert" class="my-3 alert alert-{{ $totalBalance->class }} text-right">
-            Saldo Anterior :: {{ $totalBalance->balance }}
+            @lang('custom.previous-balance') :: {{ $totalBalance->balance }}
         </div>
         @endif
 
         <table class="table table-bordered table-striped table-hover">
 
             <thead>
-                <th>Dia</th>
-                <th>Entrada 1</th>
-                <th>Saída 1</th>
-                <th>Entrada 2</th>
-                <th>Saída 2</th>
-                <th>Entrada 3</th>
-                <th>Saída 3</th>
-                <th>Saldo</th>
+                <th>@lang('custom.day')</th>
+                <th>@lang('custom.start') 1</th>
+                <th>@lang('custom.end') 1</th>
+                <th>@lang('custom.start') 2</th>
+                <th>@lang('custom.end') 2</th>
+                <th>@lang('custom.start') 3</th>
+                <th>@lang('custom.end') 3</th>
+                <th>@lang('custom.balance')</th>
             </thead>
             <tbody>
                 @foreach($report as $registry)
@@ -70,12 +70,12 @@
                     <td>{{ $registry->getBalance() }}</td>
                     @if($user->is_admin)
                     <td style="width: 10px">
-                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo?')">
+                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('<?= __('custom.recalculate-balance') ?>')">
                             @method('PUT')
                             @csrf
                             <input type="hidden" name="action" value="calcBalance" />
                             <input type="hidden" name="id" value="{{$registry->id}}" />
-                            <button type="submit" class="btn btn-sm btn-link" title="Recalcular saldo">
+                            <button type="submit" class="btn btn-sm btn-link" title="@lang('custom.recalculate-balance')">
                                 <i class="icofont-refresh"></i>
                             </button>
                         </form>
@@ -84,17 +84,17 @@
                 </tr>
                 @endforeach
                 <tr class="bg-primary text-white">
-                    <td>Horas Trabalhadas</td>
+                    <td>@lang('custom.worked-hours')</td>
                     <td colspan="5">{{ $sumOfWorkedTime }}</td>
                     <td>Saldo Mensal</td>
                     <td>{{ $balance }}</td>
                     @if($user->is_admin)
                     <td style="width: 10px">
-                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('Recalcular saldo de todos os dias?')">
+                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('<?= __('custom.recalculate-every-day') ?>')">
                             @method('PUT')
                             @csrf
                             <input type="hidden" name="action" value="calcBalanceAll" />
-                            <button type="submit" class="btn btn-sm btn-link" title="Recalcular todos os dias">
+                            <button type="submit" class="btn btn-sm btn-link" title="@lang('custom.recalculate-every-day')">
                                 <i class="icofont-refresh" style="color: #fff"></i>
                             </button>
                         </form>
