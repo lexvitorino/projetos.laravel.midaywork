@@ -80,7 +80,6 @@ function getWorkResume(){
             $('#sidebar-widgets').html(response);
             activateClock();
             $.unblockUI();
-            console.log(response);
         },
         error: function (error) {
             $.unblockUI();
