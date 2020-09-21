@@ -3,10 +3,16 @@
     "/site/css/style.css": "/site/css/style.css?id=68b329da9893e34099c7",
     "/site/js/scripts.js": "/site/js/scripts.js?id=d41d8cd98f00b204e980",
     "/admin/css/style.css": "/admin/css/style.css?id=ba89534766ccdc60f836",
-    "/admin/js/scripts.js": "/admin/js/scripts.js?id=cf0a606ac652a965d650",
+    "/admin/js/scripts.js": "/admin/js/scripts.js?id=9d8141f194e94cd2ea92",
     "/auth/css/style.css": "/auth/css/style.css?id=d8f4f41907b4afba7d2a",
-    "/js/jquery.js": "/js/jquery.js?id=23c7c5d2d1317508e807",
     "/css/common.css": "/css/common.css?id=706f7a8cb14b503f1b5c",
     "/css/icofont.css": "/css/icofont.css?id=fda7e6b3283bacb6ee82",
-    "/js/bootstrap.js": "/js/bootstrap.js?id=f6f318002edd81c17fe0"
+    "/js/bootstrap.js": "/js/bootstrap.js?id=f6f318002edd81c17fe0",
+    "/js/bootstrap.bundle.js.map": "/js/bootstrap.bundle.js.map?id=c495d70c27460b0c0186",
+    "/js/jquery.js": "/js/jquery.js?id=23c7c5d2d1317508e807",
+    "/js/jquery-mask.js": "/js/jquery-mask.js?id=cc290e6c3aeecf5021dd",
+    "/js/sweetalert.js": "/js/sweetalert.js?id=f3b8ce97ff6ce324da62",
+    "/js/jquery-blockui.js": "/js/jquery-blockui.js?id=1473907211f50cb96aa2",
+    "/css/pace-theme-flash.css": "/css/pace-theme-flash.css?id=28958b9ac2bb370e6ad6",
+    "/js/pace.js": "/js/pace.js?id=248f37358dd94120dc84"
 }
