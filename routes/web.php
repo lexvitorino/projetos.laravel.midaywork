@@ -38,6 +38,7 @@ Route::prefix('painel')->group(function () {
 
     Route::get('dayRecord', [Admin\DayRecordController::class, 'index'])->name('dayRecord');
     Route::post('dayRecord', [Admin\DayRecordController::class, 'store'])->name('dayRecord.save');
+    Route::get('dayRecord/workResume', [Admin\DayRecordController::class, 'getWorkResume'])->name('dayRecord.workResume');
 
     Route::get('monthlyReport', [Admin\MonthlyReportController::class, 'index'])->name('monthlyReport');
     Route::post('monthlyReport', [Admin\MonthlyReportController::class, 'index']);

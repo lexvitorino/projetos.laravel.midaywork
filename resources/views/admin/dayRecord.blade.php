@@ -52,6 +52,9 @@
 @endsection
 
 @section('scripts')
+<script>
+    window.workResume = "{{ route('dayRecord.workResume') }}";
+</script>
 <script src="{{ url('js/plugins/jquery.mask/jquery.mask.min.js') }}"></script>
 <script src="{{ url('js/views/dayRecord/index.js') }}"></script>
 @endsection

@@ -24,11 +24,11 @@ $(function () {
                                 });
                             }
                             updateInfo(response);
+                            getWorkResume();
                         }
                         $.unblockUI();
                     },
                     error: function (error) {
-                        console.log(error)
                         $.unblockUI();
 
                         if (error && error.responseJSON) {
@@ -67,4 +67,22 @@ function updateInfo(response) {
     if (response.today) {
         /* */
     }
+}
+
+function getWorkResume(){
+    $.blockUI({
+        message: "",
+    });
+    $.ajax({
+        url: window.workResume,
+        type: 'GET',
+        success: function (response) {
+            $('#sidebar-widgets').html(response);
+            activateClock();
+            $.unblockUI();
+        },
+        error: function (error) {
+            $.unblockUI();
+        },
+    });
 }

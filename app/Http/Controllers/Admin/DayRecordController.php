@@ -120,4 +120,22 @@ class DayRecordController extends Controller
 
         return response()->json($response);
     }
+
+    public function getWorkResume(Request $request){
+        $user = Auth::user();
+
+        $workingHours = WorkingHour::loadFromUserAndDate($user->sibscriber_id, $user->id, date('Y-m-d'));
+        if ($workingHours) {
+            $workedInterval = WorkingHour::getWorkedInterval($workingHours)->format('%H:%I:%S');
+            $exitTime = WorkingHour::getExitTime($workingHours)->format('H:i:s');
+            $activeClock = WorkingHour::getActiveClock($workingHours);
+        }
+
+        return view("admin.layouts.workResume", [
+            'workedInterval' => $workedInterval ?? '',
+            'exitTime' => $exitTime ?? '',
+            'activeClock' => $activeClock ?? ''
+        ]);
+    }
+
 }
