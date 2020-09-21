@@ -45,7 +45,7 @@ class LicenseController extends Controller
         }
 
         return view('admin.licenses.index', [
-            'title' => (object) ['icon' => 'icofont-history', 'title' => 'Licenças', 'subtitle' => 'Cadastre as licenças e férias dos colaboradores',],
+            'title' => (object) ['icon' => 'icofont-history', 'title' => __('custom.titles.license'), 'subtitle' => __('custom.titles.register-employee-licenses-and-vacations'),],
             'licenses' => $licenses,
             'user' => Auth::user()
         ]);
@@ -68,7 +68,7 @@ class LicenseController extends Controller
         }
 
         return view('admin.licenses.create', [
-            'title' => (object) ['icon' => 'icofont-history', 'title' => 'Licenças', 'subtitle' => 'Cadastre as licenças e férias dos colaboradores',],
+            'title' => (object) ['icon' => 'icofont-history', 'title' => __('custom.titles.license'), 'subtitle' => __('custom.titles.register-employee-licenses-and-vacations'),],
             'user' => $user,
             'users' => $users,
             'selectedUserId' => $selectedUserId
@@ -105,11 +105,11 @@ class LicenseController extends Controller
 
         if (!$validator->fails()) {
             if (!empty($data['start_bonus_date']) && empty($data['end_bonus_date'])) {
-                $validator->errors()->add('start_bonus_date', 'Data Fim abodado pela empresa não informado.');
+                $validator->errors()->add('start_bonus_date', __('custom.end-date-paid-by-the-company-not-informed'));
             }
 
             if (!empty($data['start_discount_date']) && empty($data['end_discount_date'])) {
-                $validator->errors()->add('end_discount_date', 'Data Fim descontado em banco de horas não informado.');
+                $validator->errors()->add('end_discount_date', __('custom.end-date-discounted-in-bank-of-hours-not-informed'));
             }
         }
 
@@ -170,7 +170,7 @@ class LicenseController extends Controller
             ->first();
 
         return view('admin.licenses.edit', [
-            'title' => (object) ['icon' => 'icofont-history', 'title' => 'Licenças', 'subtitle' => 'Cadastre as licenças e férias dos colaboradores',],
+            'title' => (object) ['icon' => 'icofont-history', 'title' => __('custom.titles.license'), 'subtitle' => __('custom.titles.register-employee-licenses-and-vacations'),],
             'user' => $user,
             'users' => $users,
             'registry' => $registry
@@ -226,11 +226,11 @@ class LicenseController extends Controller
 
         if (!$validator->fails()) {
             if (!empty($data['start_bonus_date']) && empty($data['end_bonus_date'])) {
-                $validator->errors()->add('start_bonus_date', 'Data Fim abodado pela empresa não informado.');
+                $validator->errors()->add('start_bonus_date', __('custom.end-date-paid-by-the-company-not-informed'));
             }
 
             if (!empty($data['start_discount_date']) && empty($data['end_discount_date'])) {
-                $validator->errors()->add('end_discount_date', 'Data Fim descontado em banco de horas não informado.');
+                $validator->errors()->add('end_discount_date', __('custom.end-date-discounted-in-bank-of-hours-not-informed'));
             }
         }
 
