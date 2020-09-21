@@ -65,7 +65,14 @@ class LoginController extends Controller
         if (Auth::attempt($data, $remember)) {
             return redirect()->route('admin');
         } else {
-            return redirect()->route('login');
+            if (!Auth::validate($data)) {
+                $validator->errors()->add('message', __('auth.failed'));
+                return redirect()->route('login')
+                    ->withErrors($validator)
+                    ->withInput($request->input());
+            } else {
+                return redirect()->route('login');
+            }
         }
     }
 
@@ -77,18 +84,10 @@ class LoginController extends Controller
      */
     protected function validator(array $data)
     {
-        $messages = array(
-            'email.required' => 'Campo email é requerido.',
-            'email.max' => 'Campo email não pode maior que 100 caracteres.',
-            'password.required' => 'Campo password é requerido.',
-            'password.confirmed' => 'Campo password não compátivel.',
-            'password.min' => 'Password não atende ao tamanho mínimo de 4 caracteres.',
-        );
-
         return Validator::make($data, [
             'email' => ['required', 'string', 'email', 'max:100'],
             'password' => ['required', 'string', 'min:1'],
-        ], $messages);
+        ]);
     }
 
     public function logout()

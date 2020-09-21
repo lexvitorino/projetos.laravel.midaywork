@@ -4,32 +4,32 @@
             <li class="nav-item">
                 <a href="{{ route('dayRecord') }}">
                     <i class="icofont-ui-check mr-2"></i>
-                    Registrar Ponto
+                    @lang('custom.titles.dayRecord')
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('monthlyReport') }}">
                     <i class="icofont-ui-calendar mr-2"></i>
-                    Relatório Mensal
+                    @lang('custom.titles.monthlyReport')
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('licenses.index') }}">
                     <i class="icofont-history mr-2"></i>
-                    Licença
+                    @lang('custom.titles.license')
                 </a>
             </li>
             @if($user->is_admin)
             <li class="nav-item">
                 <a href="{{ route('managerReport') }}">
                     <i class="icofont-chart-histogram mr-2"></i>
-                    Relatório Gerencial
+                    @lang('custom.titles.managerReport')
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('users.index') }}">
                     <i class="icofont-users mr-2"></i>
-                    Usuários
+                    @lang('custom.titles.users')
                 </a>
             </li>
             @endif
@@ -43,7 +43,7 @@
                     {{ $activeClock === 'workedInterval' ? 'active-clock' : '' }}>
                     {{ $workedInterval }}
                 </span>
-                <span class="label text-muted">Horas Trabalhadas</span>
+                <span class="label text-muted">@lang('custom.worked-hours')</span>
             </div>
         </div>
         <div class="division my-3"></div>
@@ -54,7 +54,7 @@
                     {{ $activeClock === 'exitTime' ? 'active-clock' : '' }}>
                     {{ $exitTime }}
                 </span>
-                <span class="label text-muted">Hora de Saída</span>
+                <span class="label text-muted">@lang('custom.exit-time')</span>
             </div>
         </div>
     </div>

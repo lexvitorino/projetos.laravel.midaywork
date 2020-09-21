@@ -65,7 +65,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:4', 'confirmed'],
-        ], $this->message());
+        ]);
 
         if ($validator->fails()) {
             return redirect()->route('users.create')
@@ -164,7 +164,7 @@ class UserController extends Controller
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:100']
-        ], $this->message());
+        ]);
 
         if (!$validator->fails()) {
             if ($data['email'] != $user->email) {
@@ -210,19 +210,5 @@ class UserController extends Controller
     private function back()
     {
         return redirect()->route('users.index');
-    }
-
-    private function message()
-    {
-        return array(
-            'name.required' => 'Campo nome é requerido.',
-            'name.max' => 'Campo nome não pode ser maior que 255 caracteres.',
-            'email.required' => 'Campo email é requerido.',
-            'email.unique' => 'Email informado já existe.',
-            'email.max' => 'Campo email não pode maior que 100 caracteres.',
-            'password.required' => 'Campo password é requerido.',
-            'password.confirmed' => 'Campo password não compátivel.',
-            'password.min' => 'Password não atende ao tamanho mínimo de 4 caracteres.',
-        );
     }
 }

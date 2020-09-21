@@ -41,7 +41,7 @@
                     <li class="nav-item">
                         <a href="{{ url('/painel/logout') }}">
                             <i class="icofont-logout mr-2"></i>
-                            Sair
+                            @lang('auth.logout')
                         </a>
                     </li>
                 </ul>

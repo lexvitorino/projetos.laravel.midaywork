@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateUtils;
-use App\Helpers\MessageUtils;
 use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class DayRecordController extends Controller
 {
@@ -37,7 +35,11 @@ class DayRecordController extends Controller
         $workingHours = WorkingHour::loadFromUserAndDate($user->sibscriber_id, $user->id, date('Y-m-d'));
 
         return view("admin.dayRecord", [
-            'title' => (object) ['icon' => 'icofont-check-alt', 'title' => 'Registrar Ponto', 'subtitle' => 'Mantenha seu ponto consistente',],
+            'title' => (object) [
+                'icon' => 'icofont-check-alt',
+                'title' => __('custom.titles.dayRecord'),
+                'subtitle' => __('custom.titles.keep-your-point-consistent'),
+            ],
             'user' => Auth::user(),
             'workingHours' => $workingHours,
             'today' => $today

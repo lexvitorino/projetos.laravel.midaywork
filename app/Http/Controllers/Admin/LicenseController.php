@@ -101,7 +101,7 @@ class LicenseController extends Controller
         $validator = Validator::make($data, [
             'user_id' => ['required'],
             'license_type' => ['required']
-        ], $this->message());
+        ]);
 
         if (!$validator->fails()) {
             if (!empty($data['start_bonus_date']) && empty($data['end_bonus_date'])) {
@@ -222,7 +222,7 @@ class LicenseController extends Controller
         $validator = Validator::make($data, [
             'user_id' => ['required'],
             'license_type' => ['required']
-        ], $this->message());
+        ]);
 
         if (!$validator->fails()) {
             if (!empty($data['start_bonus_date']) && empty($data['end_bonus_date'])) {
@@ -379,17 +379,5 @@ class LicenseController extends Controller
     private function back()
     {
         return redirect()->route('licenses.index');
-    }
-
-    private function message()
-    {
-        return array(
-            'user_id.required' => 'Campo usuário é requerido.',
-            'license_type.required' => 'Campo tipo é requerido.',
-            'start_bonus_date.required' => 'Campo Data Inicio abodado pela empresa não informado..',
-            'end_bonus_date.required' => 'Campo Data Fim abodado pela empresa não informado..',
-            'start_discount_date.required' => 'Campo Data Inicio descontado em banco de horas não informado.',
-            'end_discount_date.required' => 'Campo Data Fim descontado em banco de horas não informado.',
-        );
     }
 }
