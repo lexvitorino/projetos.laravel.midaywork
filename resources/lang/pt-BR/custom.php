@@ -68,6 +68,9 @@ return [
     'confirm-password' => 'Confirme Senha',
     'new-password' => 'Nova Senha',
     'initial-balance' => 'Saldo Inicial',
+    'monthly-balance' => 'Saldo Mensal',
+    'licensed-holidays' => 'Férias abonadas',
+    'holidays-discounted-in-hour-bank' => 'Férias descontadas em banco de horas',
 
     'information' => [
         'information-filed' => 'Informe o :attribute.',

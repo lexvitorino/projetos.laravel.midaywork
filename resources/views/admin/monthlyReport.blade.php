@@ -62,10 +62,10 @@
                     <td>{{ $registry->time6 }}</td>
                     @endif
                     @if($registry->status === 'bonus-vocation')
-                    <td colspan="6" class="bg-success"> Férias abonadas </td>
+                    <td colspan="6" class="bg-success"> @lang('custom.licensed-holidays') </td>
                     @endif
                     @if($registry->status === 'discounted-vocation')
-                    <td colspan="6" class="bg-info"> Férias descontadas em banco de horas </td>
+                    <td colspan="6" class="bg-info"> @lang('custom.holidays-discounted-in-hour-bank') </td>
                     @endif
                     <td>{{ $registry->getBalance() }}</td>
                     @if($user->is_admin)
@@ -86,7 +86,7 @@
                 <tr class="bg-primary text-white">
                     <td>@lang('custom.worked-hours')</td>
                     <td colspan="5">{{ $sumOfWorkedTime }}</td>
-                    <td>Saldo Mensal</td>
+                    <td>@lang('custom.monthly-balance')</td>
                     <td>{{ $balance }}</td>
                     @if($user->is_admin)
                     <td style="width: 10px">

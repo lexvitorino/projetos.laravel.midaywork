@@ -50,6 +50,17 @@
                 <div class="invalid-feedback">
                 </div>
             </div>
+            <div class="link-flag text-center">
+                <a href="lang/pt-BR">
+                    <img class="link-flag-icon" src="{{url('img/flag/pt-BR.png')}}" alt="pt-BR">
+                </a>
+                <a href="lang/en">
+                    <img class="link-flag-icon" src="{{url('img/flag/en.png')}}" alt="en">
+                </a>
+                <a href="lang/es">
+                    <img class="link-flag-icon" src="{{url('img/flag/es.png')}}" alt="es">
+                </a>
+            </div>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-lg btn-primary">@lang('auth.login')</button>

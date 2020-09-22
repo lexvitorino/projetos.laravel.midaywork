@@ -68,6 +68,9 @@ return [
     'confirm-password' => 'Confirm Password',
     'new-password' => 'New Password',
     'initial-balance' => 'Initial Balance',
+    'monthly-balance' => 'Monthly Balance',
+    'licensed-holidays' => 'Licensed holidays',
+    'holidays-discounted-in-hour-bank' => 'Holidays discounted in hour bank',
 
     'information' => [
         'information-filed' => 'Inform the :attribute',

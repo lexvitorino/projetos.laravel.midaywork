@@ -13,15 +13,15 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'email'   => 'E-mail',
-    'password'   => 'Password',
-    'remember-me' => 'Remember me?',
-    'register-new-member' => 'Register a new member',
-    'login' => 'GO',
-    'logout' => 'Logout',
-    'developed-with' => 'Developed with',
-    'by' => 'by'
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',
+    'email'   => 'Email',
+    'password'   => 'Contraseña',
+    'remember-me' => 'Recuérdame?',
+    'register-new-member' => 'Registrar un nuevo miembro',
+    'login' => 'Vamos',
+    'logout' => 'Cerrar sesión',
+    'developed-with' => 'Desarrollado con',
+    'by' => 'por'
 
 ];

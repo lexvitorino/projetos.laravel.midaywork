@@ -30,3 +30,7 @@ footer.footer {
     align-items: center;
     padding-right: 20px;
 }
+
+.link-flag-icon {
+    width: 2rem;
+}

@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site;
 use App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,11 @@ Route::get('/', function(){
 
 Route::prefix('painel')->group(function () {
     Route::get('/', [Admin\DayRecordController::class, 'index'])->name('admin');
+
+    Route::get('lang/{locale}', function($locale) {
+        session()->put('locale', $locale);
+        return redirect()->back();
+    });
 
     Route::get('login', [Admin\Auth\LoginController::class, 'index'])->name('login');
     Route::post('login', [Admin\Auth\LoginController::class, 'authenticate']);
