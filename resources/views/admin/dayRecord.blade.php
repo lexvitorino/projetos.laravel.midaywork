@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <form class="mt-5" action="{{ route('dayRecord') }}" method="post">
+    <form class="dayRecord mt-5" action="{{ route('dayRecord') }}" method="post">
         @csrf
         <div class="input-group no-border">
             <input type="date" name="forcedDate" class="form-control mr-3" />

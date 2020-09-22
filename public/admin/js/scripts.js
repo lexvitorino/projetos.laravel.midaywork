@@ -35,7 +35,7 @@ activateClock();
 $(function () {
     $('.time').mask('00:00:00');
     $("form.dayRecord").submit(function (e) {
-        event.preventDefault();
+        e.preventDefault();
         swal({
             title: "Confirma apontamento?",
             text: "",
