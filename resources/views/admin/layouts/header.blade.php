@@ -38,6 +38,12 @@
             </div>
             <div class="dropdown-content">
                 <ul class="nav-list">
+                    <!--<li class="nav-item">
+                        <a href="{{ route('profile') }}">
+                            <i class="icofont-user mr-2"></i>
+                            @lang('auth.profile')
+                        </a>
+                    </li>-->
                     <li class="nav-item">
                         <a href="{{ url('/painel/logout') }}">
                             <i class="icofont-logout mr-2"></i>

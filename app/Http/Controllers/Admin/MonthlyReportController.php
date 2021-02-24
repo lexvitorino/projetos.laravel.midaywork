@@ -79,9 +79,51 @@ class MonthlyReportController extends Controller
             }
         }
 
-        $totalBalanceTime = (WorkingHour::where('user_id', $selectedUser->id)
+        $_totalBalanceTime = WorkingHour::where('user_id', $selectedUser->id)
             ->where('work_date', '<', ($selectedPeriod . '-' . sprintf('%02d', 1)))
-            ->sum('worked_time')) + DateUtils::getSecondsToTimeString($selectedUser->time_balance);
+            ->get();
+
+        $totalBalanceTime = 0;
+        foreach ($_totalBalanceTime as $key => $_balance) {
+            $workedTime = 0;
+            if ($_balance->time1 && $_balance->time1) {
+                $beging = new DateTime($_balance->time1);
+                $end = new DateTime($_balance->time2);
+                $currentTime = $end->diff($beging);
+                $workedTime = $workedTime + (($currentTime->h * 60 * 60) + ($currentTime->i * 60) + $currentTime->s);
+            }
+            if ($_balance->time3 && $_balance->time4) {
+                $beging = new DateTime($_balance->time3);
+                $end = new DateTime($_balance->time4);
+                $currentTime = $end->diff($beging);
+                $workedTime = $workedTime + (($currentTime->h * 60 * 60) + ($currentTime->i * 60) + $currentTime->s);
+            }
+
+            if ($_balance->time5 && $_balance->time6) {
+                $beging = new DateTime($_balance->time5);
+                $end = new DateTime($_balance->time6);
+                $currentTime = $end->diff($beging);
+                $workedTime = $workedTime + (($currentTime->h * 60 * 60) + ($currentTime->i * 60) + $currentTime->s);
+            }
+
+            if ($workedTime >= Constants::DAILY_TIME && $_balance->status === "normal") {
+                $totalBalanceTime = $totalBalanceTime + ($workedTime - (Constants::DAILY_TIME));
+                if($workedTime !== $_balance->worked_time){
+                    $_balance->worked_time = $workedTime;
+                    $_balance->save();
+                }
+
+            } else if ($workedTime < Constants::DAILY_TIME && $_balance->status === "normal") {
+                $totalBalanceTime = $totalBalanceTime - (Constants::DAILY_TIME - $workedTime);
+                if($workedTime !== $_balance->worked_time){
+                    $_balance->worked_time = $workedTime;
+                    $_balance->save();
+                }
+
+            }
+
+        }
+
 
         if ($selectedUser->signal === '-') {
             $totalBalanceTime = $totalBalanceTime * (-1);
@@ -115,6 +157,7 @@ class MonthlyReportController extends Controller
     public function execute(Request $request)
     {
         $action = $request->input('action');
+
         switch ($action) {
             case 'calcBalance':
                 return $this->calcBalance($request);
@@ -130,6 +173,7 @@ class MonthlyReportController extends Controller
     private function calcBalance(Request $request)
     {
         $id = intval($request->input('id'));
+        $index = $request->input('index');
 
         $workingHour = WorkingHour::where('subscriber_id', Auth::user()->subscriber_id)
             ->where('id', $id)
@@ -140,7 +184,53 @@ class MonthlyReportController extends Controller
             $workingHour->save();
         }
 
-        return redirect()->route("monthlyReport");
+        /////////////////////////////////////////////////////////
+        $currentDate = new DateTime();
+
+        $user = Auth::user();
+
+        $selectedUserId = $user->id;
+        if ($user->is_admin) {
+            $selectedUserId = $request->input('user') ? intval($request->input('user')) : $user->id;
+        }
+
+        $selectedUser = User::find($selectedUserId);
+
+        $selectedPeriod = $request->input('period') ? $request->input('period') : $currentDate->format('Y-m');
+
+        $registries = WorkingHour::getMonthlyReport($selectedUserId, $selectedPeriod);
+
+        $report = [];
+        $workDay = 0;
+        $bonusDay = 0;
+        $sumOfWorkedTime = 0;
+        $lastDay = DateUtils::getLastDayOfMonth($selectedPeriod)->format('d');
+
+        Session::flash('selectedUserId', $selectedUser->id);
+        Session::flash('selectedPeriod', $selectedPeriod);
+
+        for ($day = 1; $day <= $lastDay; $day++) {
+            $date = $selectedPeriod . '-' . sprintf('%02d', $day);
+
+            try {
+                $registry = $registries[$date];
+                if (DateUtils::isPastWorkday($date)) {
+                    $workDay++;
+                    if ($registry->status === 'bonus-vocation') {
+                        $bonusDay++;
+                    }
+                }
+                $sumOfWorkedTime += $registry->worked_time ?? 0;
+                array_push($report, $registry);
+            } catch (\Throwable $th) {
+                array_push($report, new WorkingHour([
+                    'work_date' => $date,
+                    'worked_time' => 0
+                ]));
+            }
+        }
+
+        return response()->json($report[$index]);
     }
 
     private function calcBalanceAll(Request $request)
@@ -164,7 +254,54 @@ class MonthlyReportController extends Controller
             $workingHour->save();
         }
 
-        return redirect()->route("monthlyReport");
+
+        ////////////////////
+        $currentDate = new DateTime();
+
+        $user = Auth::user();
+
+        $selectedUserId = $user->id;
+        if ($user->is_admin) {
+            $selectedUserId = $request->input('user') ? intval($request->input('user')) : $user->id;
+        }
+
+        $selectedUser = User::find($selectedUserId);
+
+        $selectedPeriod = $request->input('period') ? $request->input('period') : $currentDate->format('Y-m');
+
+        $registries = WorkingHour::getMonthlyReport($selectedUserId, $selectedPeriod);
+
+        $report = [];
+        $workDay = 0;
+        $bonusDay = 0;
+        $sumOfWorkedTime = 0;
+        $lastDay = DateUtils::getLastDayOfMonth($selectedPeriod)->format('d');
+
+        //Session::flash('selectedUserId', $selectedUser->id);
+        //Session::flash('selectedPeriod', $selectedPeriod);
+
+        for ($day = 1; $day <= $lastDay; $day++) {
+            $date = $selectedPeriod . '-' . sprintf('%02d', $day);
+
+            try {
+                $registry = $registries[$date];
+                if (DateUtils::isPastWorkday($date)) {
+                    $workDay++;
+                    if ($registry->status === 'bonus-vocation') {
+                        $bonusDay++;
+                    }
+                }
+                $sumOfWorkedTime += $registry->worked_time ?? 0;
+                array_push($report, $registry);
+            } catch (\Throwable $th) {
+                array_push($report, new WorkingHour([
+                    'work_date' => $date,
+                    'worked_time' => 0
+                ]));
+            }
+        }
+
+        return response()->json($report);
     }
 
     private function getPeriods()

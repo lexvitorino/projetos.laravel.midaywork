@@ -53,4 +53,6 @@ Route::prefix('painel')->group(function () {
 
     Route::get('managerReport', [Admin\ManagerReportController::class, 'index'])->name('managerReport');
     Route::post('managerReport', [Admin\ManagerReportController::class, 'execute']);
+
+    Route::get('profile', [Admin\ProfileController::class, 'index'])->name('profile');
 });

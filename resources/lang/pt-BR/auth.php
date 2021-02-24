@@ -21,6 +21,7 @@ return [
     'register-new-member' => 'Registrar um novo membro',
     'login' => 'Entrar',
     'logout' => 'Sair',
+    'profile' => 'Perfil',
     'developed-with' => 'Desenvolvido com',
     'by' => 'por'
 ];

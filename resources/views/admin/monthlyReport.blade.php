@@ -51,15 +51,15 @@
             </thead>
             <tbody>
                 @foreach($report as $registry)
-                <tr>
+                <tr data-index="{{$loop->index}}">
                     <td>{{ $registry->formatDateWithLocale($registry->work_date) }}</td>
                     @if(empty($registry->status) || $registry->status === 'normal')
-                    <td>{{ $registry->time1 }}</td>
-                    <td>{{ $registry->time2 }}</td>
-                    <td>{{ $registry->time3 }}</td>
-                    <td>{{ $registry->time4 }}</td>
-                    <td>{{ $registry->time5 }}</td>
-                    <td>{{ $registry->time6 }}</td>
+                    <td data-time="1">{{ $registry->time1 }}</td>
+                    <td data-time="2">{{ $registry->time2 }}</td>
+                    <td data-time="3">{{ $registry->time3 }}</td>
+                    <td data-time="4">{{ $registry->time4 }}</td>
+                    <td data-time="5">{{ $registry->time5 }}</td>
+                    <td data-time="6">{{ $registry->time6 }}</td>
                     @endif
                     @if($registry->status === 'bonus-vocation')
                     <td colspan="6" class="bg-success"> @lang('custom.licensed-holidays') </td>
@@ -70,11 +70,12 @@
                     <td>{{ $registry->getBalance() }}</td>
                     @if($user->is_admin)
                     <td style="width: 10px">
-                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('<?= __('custom.recalculate-balance') ?>')">
+                        <form class="d-inline recalculate" data-id="{{$loop->index}}" data-action="only" method="POST" action="{{ route('monthlyReport') }}">
                             @method('PUT')
                             @csrf
                             <input type="hidden" name="action" value="calcBalance" />
                             <input type="hidden" name="id" value="{{$registry->id}}" />
+                            <input type="hidden" name="index" value="{{$loop->index}}" />
                             <button type="submit" class="btn btn-sm btn-link" title="@lang('custom.recalculate-balance')">
                                 <i class="icofont-refresh"></i>
                             </button>
@@ -90,7 +91,7 @@
                     <td>{{ $balance }}</td>
                     @if($user->is_admin)
                     <td style="width: 10px">
-                        <form class="d-inline" method="POST" action="{{ route('monthlyReport') }}" onsubmit="return confirm('<?= __('custom.recalculate-every-day') ?>')">
+                        <form class="d-inline recalculate" data-action="all" method="POST" action="{{ route('monthlyReport') }}">
                             @method('PUT')
                             @csrf
                             <input type="hidden" name="action" value="calcBalanceAll" />
